@@ -2,6 +2,7 @@ from typing import Any, Iterable
 from scrapy.http import Request, Response
 from scrapy import Spider, Selector
 from urllib.parse import unquote
+import json
 
 
 class BaikespiderSpider(Spider):
@@ -9,9 +10,10 @@ class BaikespiderSpider(Spider):
     allowed_domains = ["baike.baidu.com"]
     outputFolder = "output/"
     mode = "parse"
+    format = "txt"
 
     # * Initialize the spider with the given paths and mode
-    def __init__(self, paths: str=None, mode: str="parse", **kwargs: Any):
+    def __init__(self, paths: str=None, mode: str="parse", format: str="txt", **kwargs: Any):
         super().__init__(self.name, **kwargs)
         # * Crawl the page of the given path
         if paths:
@@ -19,6 +21,8 @@ class BaikespiderSpider(Spider):
             self.start_urls = [f'https://baike.baidu.com/item/{path}' for path in paths]
         else:
             self.start_urls = ['https://baike.baidu.com/item/scrapy']
+        if format != "txt":
+            self.format = format
         if mode != "save" and mode != "parse":
             self.log(f"\033[1;31m Invalid mode: {mode} \033[0m")
             exit(1)
@@ -51,11 +55,19 @@ class BaikespiderSpider(Spider):
         # * page Update date
         dateUpdate = selector.xpath('//meta[@itemprop="dateUpdate"]/@content').extract_first()
 
-        outputFile = self.getOutputFile(response=response)
-        with open(self.outputFolder + outputFile, 'w') as f:
-            f.write(f"Title: {title}\n")
-            f.write(f"Date Update: {dateUpdate}\n")
-            f.write(f"Description: {description}\n")
+        outputFile = self.getOutputFile(response=response, format=self.format)
+        if self.format == "txt":
+            with open(self.outputFolder + outputFile, 'w') as f:
+                f.write(f"Title: {title}\n")
+                f.write(f"Date Update: {dateUpdate}\n")
+                f.write(f"Description: {description}\n")
+        elif self.format == "json":
+            with open(self.outputFolder + outputFile, 'w') as f:
+                json.dump({
+                    "Title": title,
+                    "Date Update": dateUpdate,
+                    "Description": description
+                }, f, ensure_ascii=False, indent=4)
 
     @staticmethod
     def getOutputFile(response: Response, format: str="txt") -> str:
