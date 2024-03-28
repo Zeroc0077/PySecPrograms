@@ -1,0 +1,5 @@
+{
+    "Title": "Kotlin_百度百科",
+    "Date Update": "2023-04-30 09:42:23",
+    "Description": "Kotlin （科特林）是一个用于现代多平台应用的静态编程语言，由 JetBrains 开发。Kotlin可以编译成Java字节码，也可以编译成JavaScript，方便在没有JVM的设备上运行。除此之外Kotlin还可以编译成二进制代码直接运行在机器上（例如嵌入式设备或 iOS）。Kotlin已正式成为Android官方支持开发语言。"
+}
