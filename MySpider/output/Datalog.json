@@ -1,0 +1,5 @@
+{
+    "Title": "Datalog_百度百科",
+    "Date Update": "2022-01-09 14:49:28",
+    "Description": "Datalog是一种数据查询语言，专门设计与大型关系数据库交互，语法与Prolog相似。正如SQL只是一个规范，Transact-SQL、PL-SQL是其具体实现一样；Datalog也是一个规范，bddbddb、 DES、OverLog、Deals等都按照Datalog的语法实现了自己的语言，所以Datalog没有特定的执行环境（如Java之于Java虚拟机，Prolog之于SWI-Prolog）。"
+}
