@@ -6,10 +6,61 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.lib import fonts
+import matplotlib.pyplot as plt
+from matplotlib import font_manager
 import os
 import argparse
 import json
+
+count_word = {
+    "编程": 0,
+    "语言": 0,
+    "程序": 0,
+    "算法": 0,
+    "数据结构": 0,
+    "网络": 0,
+    "操作系统": 0,
+    "实践": 0,
+    "工具": 0,
+    "安全": 0,
+    "加密": 0,
+    "漏洞": 0,
+    "思维": 0,
+    "模式": 0,
+    "数学": 0,
+    "硬件": 0,
+    "软件": 0,
+    "设计": 0,
+    "架构": 0,
+    "开发": 0,
+    "测试": 0,
+    "面向对象": 0,
+    "函数式": 0,
+    "面向过程": 0,
+    "并发": 0,
+    "分布式": 0,
+    "性能": 0,
+    "科学": 0,
+    "计算": 0,
+    "机器学习": 0,
+    "深度学习": 0,
+    "数据": 0,
+    "发布": 0
+}
+
+def count_words(content):
+    for word in count_word:
+        count_word[word] += content.count(word)
+
+def draw_word_statistics():
+    plt.figure()
+    my_font = font_manager.FontProperties(fname="./SimSun.ttf")
+    plt.ylabel("Word")
+    plt.xlabel("Count")
+    plt.title("Word Statistics")
+    plt.yticks(range(len(count_word)), count_word.keys(), fontproperties=my_font, fontsize=7)
+    plt.barh(range(len(count_word)), count_word.values())
+    plt.savefig("word_statistics.png")
 
 def toDocx(filename: str, folder: str):
     # Get all the json files in the folder
@@ -44,12 +95,17 @@ def toDocx(filename: str, folder: str):
         # Set the description config and write content
         description = doc.add_paragraph()
         description_run = description.add_run(data["Description"]) # add description content
+        # count the words in the description
+        count_words(data["Description"])
         # set description font
         description_run.font.name = u"宋体"
         description_run.element.rPr.rFonts.set(qn("w:eastAsia"), u"宋体")
         description_run.font.size = Pt(16)
     # Save the docx file
     doc.save(filename)
+    # draw the word statistics
+    draw_word_statistics()
+
 
 def toPDF(filename: str, folder: str):
     # Get all the json files in the folder
@@ -77,8 +133,12 @@ def toPDF(filename: str, folder: str):
         content.append(Paragraph("更新日期：" + data["Date Update"], styles["Normal"]))
         # Add description
         content.append(Paragraph(data["Description"], styles["Normal"]))
+        # count the words in the description
+        count_words(data["Description"])
     # Build the pdf file
     pdf.build(content)
+    # draw the word statistics
+    draw_word_statistics()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Convert JSON to DOCX")
