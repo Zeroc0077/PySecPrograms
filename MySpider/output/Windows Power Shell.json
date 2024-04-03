@@ -1,5 +1,0 @@
-{
-    "Title": "Windows Power Shell_百度百科",
-    "Date Update": "2024-03-03 04:04:39",
-    "Description": "Windows PowerShell 是微软发布的一种命令行外壳程序和脚本环境，使命令行用户和脚本编写者可以利用 .NET Framework的强大功能。引入了许多非常有用的新概念，从而进一步扩展了在 Windows 命令提示符和 Windows Script Host 环境中获得的知识和创建的脚本。Windows PowerShell v3将伴随着Microsoft Hyper-V 3.0和Windows Server 2012发布。PowerShell v3是一个Windows任务自动化的框架，它由一个命令行shell和内置在这个.NET框架上的编程语言组成。PowerShell v3采用新的cmdlet让管理员能够更深入到系统进程中，这些进程可以制作成可执行的文件或脚本（script）。"
-}
