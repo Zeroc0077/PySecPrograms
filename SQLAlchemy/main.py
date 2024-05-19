@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy import create_engine, text
 
 engine = create_engine(
-    "mysql+mysqlconnector://root:123456@localhost:3306/test", echo=True)
+    "mysql+pymysql://root:123456@localhost:3306/test", echo=True)
 
 try:
     conn = engine.connect()
