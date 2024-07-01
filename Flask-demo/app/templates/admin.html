@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Admin</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="mt-5">Admin Page</h1>
+        <ul class="list-group mt-3">
+            {% for user in users %}
+            <li class="list-group-item">
+                {{ user.username }} ({{ user.role }})
+                <div class="float-right">
+                    <a href="{{ url_for('view', id=user.id) }}" class="btn btn-info btn-sm">View Profile</a>
+                    <a href="{{ url_for('edit', id=user.id) }}" class="btn btn-warning btn-sm ml-2">Edit</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Back to Home</a>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="alert alert-warning mt-3">
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+    </div>
+</body>
+
+</html>

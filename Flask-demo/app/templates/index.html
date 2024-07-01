@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Index</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="card mt-5">
+            <div class="card-body">
+                <h1 class="card-title">Website Features</h1>
+                <p class="card-text">
+                    Welcome to our website! Here are some of the basic features we offer:
+                </p>
+                <ul>
+                    <li>User registration and account creation</li>
+                    <li>Secure login functionality</li>
+                    <li>Personalized profile management</li>
+                    <li>And much more!</li>
+                </ul>
+                <a href="{{ url_for('login') }}" class="btn btn-secondary">Login</a>
+                <a href="{{ url_for('register') }}" class="btn btn-info">Register</a>
+            </div>
+        </div>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="alert alert-warning mt-3">
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+    </div>
+</body>
+
+</html>

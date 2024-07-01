@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="card mt-5">
+            <div class="card-body">
+                <div class="d-flex justify-content-end">
+                    <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+                </div>
+                <h1 class="card-title">Profile of {{ user['username'] }}</h1>
+                <table class="table mt-3">
+                    <tr>
+                        <th>Username</th>
+                        <td>{{ user['username'] }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>{{ user['email'] }}</td>
+                    </tr>
+                    <tr>
+                        <th>Role</th>
+                        <td>{{ user['role'] }}</td>
+                    </tr>
+                    <tr>
+                        <th>Description</th>
+                        <td>{{ user['description'] }}</td>
+                    </tr>
+                    {% if current_user.role == 'admin' or current_user.username == user['username'] %}
+                    <tr>
+                        <th>Password Hash</th>
+                        <td>{{ user['password'] }}</td>
+                    </tr>
+                    {% endif %}
+                </table>
+                {% if current_user.username == user['username'] or current_user.username == 'admin' %}
+                <a href="{{ url_for('edit', id=user['id']) }}" class="btn btn-primary mt-3">Edit Profile</a>
+                {% endif %}
+                <a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
