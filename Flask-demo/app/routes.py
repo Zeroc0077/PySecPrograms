@@ -1,9 +1,10 @@
-from flask import render_template, url_for, redirect, request, flash
+from flask import render_template, url_for, redirect, request, flash, session
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from app import app, db, login_manager
 from app.models import User
+from app.utils import *
 
 init_users = [
     {
@@ -100,11 +101,30 @@ def register():
     return render_template('register.html')
 
 
+@app.route('/captcha', methods=['GET'])
+def captcha():
+    captcha_code = generate_code()
+    session['captcha'] = captcha_code
+    if generate_captcha_image(captcha_code):
+        return "static/captcha.png"
+    return "Failed to generate captcha"
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    captcha_code = generate_code()
+    session['captcha'] = captcha_code
+    if not generate_captcha_image(captcha_code):
+        flash('Failed to generate captcha')
+        return render_template('login.html')
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        captcha = request.form['captcha']
+        expected_captcha = session.get('captcha')
+        if not expected_captcha or captcha != expected_captcha:
+            flash('Invalid captcha')
+            return redirect(url_for('login'))
         user = User.query.filter_by(username=username).first()
         if user and check_password_hash(user.password, password):
             login_user(user)
